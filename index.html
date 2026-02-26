@@ -813,12 +813,9 @@ function submitData(){
 
   console.log('=== RESEARCH DATA ==='); console.table(payload);
 
-  if(SHEETS_URL && SHEETS_URL!=='https://script.google.com/macros/s/AKfycbwxGWLnzvyjL84_oiu6iimKNjPaoMBasXkskqoJML8POpWVbpk3GKSm7hD1KiPw0R_YMQ/exec'){
-    fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-      .then(()=>showThankyou(finalPortfolio)).catch(()=>showThankyou(finalPortfolio));
-  } else {
-    setTimeout(()=>showThankyou(finalPortfolio),1400);
-  }
+  fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+    .then(()=>showThankyou(finalPortfolio))
+    .catch(()=>showThankyou(finalPortfolio));
 }
 
 function showThankyou(finalPort){
