@@ -316,7 +316,7 @@ header{position:relative;z-index:10;padding:48px 40px 18px;text-align:center;bor
 // ══════════════════════════════════
 // GOOGLE SHEETS — paste your URL here
 // ══════════════════════════════════
-const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbyMi_DC4aQld8h-CO_WBQKB-9A1JSyXjIoEvWNBj3TBWwIKayHj0Qd4E5aYNd5WXCpzBQ/exec';
+const SHEETS_URL = 'https://script.google.com/macros/s/AKfycbwxGWLnzvyjL84_oiu6iimKNjPaoMBasXkskqoJML8POpWVbpk3GKSm7hD1KiPw0R_YMQ/exec';
 
 // ── TICKER ────────────────────────
 const TICKS = [
@@ -813,7 +813,7 @@ function submitData(){
 
   console.log('=== RESEARCH DATA ==='); console.table(payload);
 
-  if(SHEETS_URL && SHEETS_URL!=='https://script.google.com/macros/s/AKfycbyMi_DC4aQld8h-CO_WBQKB-9A1JSyXjIoEvWNBj3TBWwIKayHj0Qd4E5aYNd5WXCpzBQ/exec'){
+  if(SHEETS_URL && SHEETS_URL!=='https://script.google.com/macros/s/AKfycbwxGWLnzvyjL84_oiu6iimKNjPaoMBasXkskqoJML8POpWVbpk3GKSm7hD1KiPw0R_YMQ/exec'){
     fetch(SHEETS_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
       .then(()=>showThankyou(finalPortfolio)).catch(()=>showThankyou(finalPortfolio));
   } else {
@@ -884,7 +884,7 @@ STEP 3: Deploy → New Deployment → Web App
   - Who has access: Anyone
   Copy the Web App URL.
 
-STEP 4: Replace 'https://script.google.com/macros/s/AKfycbyMi_DC4aQld8h-CO_WBQKB-9A1JSyXjIoEvWNBj3TBWwIKayHj0Qd4E5aYNd5WXCpzBQ/exec' in this file with that URL.
+STEP 4: Replace 'https://script.google.com/macros/s/AKfycbwxGWLnzvyjL84_oiu6iimKNjPaoMBasXkskqoJML8POpWVbpk3GKSm7hD1KiPw0R_YMQ/exec' in this file with that URL.
 
 STEP 5: Export Google Sheet as CSV → Import to SPSS.
   Columns Q6–Q10 = FL factor items (Likert 1–5)
