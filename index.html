@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LILLY‑i (Intelligence) Platform — Prototype</title>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" />
+    <link rel="stylesheet" href="./styles.css" />
+    <script defer src="https://cdn.jsdelivr.net/npm/plotly.js-dist-min@2.35.2/plotly.min.js"></script>
+    <script defer src="./data.js"></script>
+    <script defer src="./insights.js"></script>
+    <script defer src="./app.js"></script>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="topbar__left">
+        <div class="brand">
+          <div class="brand__mark">LILLY‑i</div>
+          <div class="brand__sub">AI‑powered intelligence layer (prototype)</div>
+        </div>
+      </div>
+      <div class="topbar__right">
+        <div class="pill">
+          <div class="pill__label">As‑of</div>
+          <div class="pill__value" id="asOf"></div>
+        </div>
+        <button class="btn" id="regen">Regenerate demo data</button>
+      </div>
+    </header>
+
+    <main class="shell">
+      <section class="hero">
+        <div class="hero__title">Proactive strategy alerts for LILLY Direct</div>
+        <div class="hero__subtitle">
+          This dashboard simulates an “intelligence layer” that identifies where to expand, which disease areas to prioritize,
+          and where competitors are gaining share — then converts signals into a prioritized action list.
+        </div>
+
+        <div class="kpiGrid">
+          <div class="kpiCard">
+            <div class="kpiCard__label">Expansion hot zones</div>
+            <div class="kpiCard__value" id="kpiHotZones">—</div>
+            <div class="kpiCard__hint">Regions scoring above the expansion threshold</div>
+          </div>
+          <div class="kpiCard">
+            <div class="kpiCard__label">Priority diseases</div>
+            <div class="kpiCard__value" id="kpiPriorityDiseases">—</div>
+            <div class="kpiCard__hint">Diseases with highest composite prioritization score</div>
+          </div>
+          <div class="kpiCard">
+            <div class="kpiCard__label">Competitor share surges</div>
+            <div class="kpiCard__value" id="kpiShareSurges">—</div>
+            <div class="kpiCard__hint">Detected statistically meaningful share upticks</div>
+          </div>
+          <div class="kpiCard">
+            <div class="kpiCard__label">Regulatory alerts</div>
+            <div class="kpiCard__value" id="kpiRegAlerts">—</div>
+            <div class="kpiCard__hint">Policies with elevated impact x likelihood</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="tabs">
+        <nav class="tabs__nav" aria-label="Modules">
+          <button class="tabBtn isActive" data-tab="soWhat">So What Command Center</button>
+          <button class="tabBtn" data-tab="geo">Geographic Heat Map</button>
+          <button class="tabBtn" data-tab="disease">Disease Prioritization</button>
+          <button class="tabBtn" data-tab="comp">Competitive Radar</button>
+          <button class="tabBtn" data-tab="policy">Regulatory & Policy Watchtower</button>
+        </nav>
+
+        <div class="tabs__content">
+          <!-- So What -->
+          <section class="tabPanel isActive" id="tab-soWhat">
+            <div class="grid2">
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Today’s recommended actions</div>
+                    <div class="card__sub">Synthesized across all modules (ranked by impact, urgency, confidence)</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="actionsList" class="list"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Scenario preview</div>
+                    <div class="card__sub">What happens if we execute the top actions?</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="scenarioChart" class="plot"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="grid2">
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Why these actions?</div>
+                    <div class="card__sub">Evidence trail from expansion, disease, competition, and policy signals</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="evidenceTable"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Risk & dependency map</div>
+                    <div class="card__sub">Constraints that could delay value capture</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="riskBubbles" class="plot"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- GEO -->
+          <section class="tabPanel" id="tab-geo">
+            <div class="grid2">
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">State‑wise expansion & signals</div>
+                    <div class="card__sub">
+                      One row per state, with synthetic SALES_TRANSACTIONS, CONSULTS, GEOGRAPHY and IQVIA‑style signals plus expansion score.
+                    </div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="geoStateTable"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">State‑wise disease & medicine view</div>
+                    <div class="card__sub">For each state, the most prevalent diseases and indicative LILLY Direct therapies</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="geoDiseaseTable"></div>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <!-- DISEASE -->
+          <section class="tabPanel" id="tab-disease">
+            <div class="grid2">
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Disease Prioritization Matrix</div>
+                    <div class="card__sub">Impact vs feasibility, size by unmet need, color by competition intensity</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="diseaseMatrix" class="plot plot--tall"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">AI-ranked disease opportunities</div>
+                    <div class="card__sub">Composite score using multi-criteria weighting</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="diseaseRankTable"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card__header">
+                <div>
+                  <div class="card__title">What changed recently?</div>
+                  <div class="card__sub">Signals that moved disease rankings (trend + “literature” pulse)</div>
+                </div>
+              </div>
+              <div class="card__body">
+                <div id="diseaseSignals" class="plot"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- COMP -->
+          <section class="tabPanel" id="tab-comp">
+            <div class="grid2">
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Competitive Radar</div>
+                    <div class="card__sub">Share shifts, pipeline momentum, and pricing pressure indicators</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="shareTrend" class="plot plot--tall"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Threats & opportunities</div>
+                    <div class="card__sub">AI-triggered alerts with suggested counter-moves</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="compAlerts" class="list"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card__header">
+                <div>
+                  <div class="card__title">Competitor posture (radar)</div>
+                  <div class="card__sub">Composite posture across pipeline, marketing, pricing, partnerships, sentiment</div>
+                </div>
+              </div>
+              <div class="card__body">
+                <div id="compRadar" class="plot"></div>
+              </div>
+            </div>
+          </section>
+
+          <!-- POLICY -->
+          <section class="tabPanel" id="tab-policy">
+            <div class="grid2">
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">Regulatory & Policy Watchtower</div>
+                    <div class="card__sub">Impact x likelihood risk scoring + watchlist</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="policyTable"></div>
+                </div>
+              </div>
+
+              <div class="card">
+                <div class="card__header">
+                  <div>
+                    <div class="card__title">AI interpretation</div>
+                    <div class="card__sub">What the change means for market access & compliance</div>
+                  </div>
+                </div>
+                <div class="card__body">
+                  <div id="policyInsights" class="list"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card__header">
+                <div>
+                  <div class="card__title">Policy heat map</div>
+                  <div class="card__sub">Risk distribution by category (privacy, pricing, access, telehealth)</div>
+                </div>
+              </div>
+              <div class="card__body">
+                <div id="policyHeat" class="plot"></div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__left">
+        Prototype only. Uses synthetic demo data. Replace `data.js` + `insights.js` with real feeds/models.
+      </div>
+      <div class="footer__right">
+        <span class="muted">Keyboard:</span> <kbd>1</kbd> So What <kbd>2</kbd> Geo <kbd>3</kbd> Disease <kbd>4</kbd> Comp <kbd>5</kbd> Policy
+      </div>
+    </footer>
+  </body>
+</html>
+
